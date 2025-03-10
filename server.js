@@ -5,6 +5,8 @@ const mongoose = require("mongoose");
 const methodOverride = require("method-override"); 
 const morgan = require("morgan"); 
 const authController = require("./controllers/auth");
+const session = require('express-session');
+
 
 
 //initialize express
@@ -29,8 +31,15 @@ app.use(methodOverride("_method"));
 // Morgan for logging HTTP requests
 app.use(morgan('dev'));
 
+app.use(session({
+    secret: process.env.SESSION_SECRET || "defaultSecret",
+    resave: false,
+    saveUninitialized: false,
+}));
+
 //router is actually a type of middleware
 app.use("/auth", authController);
+
 
 //any Http requests from the browser that comes to /auth,
 //  will automatically be forward to the router code insede of the authController
@@ -38,7 +47,9 @@ app.use("/auth", authController);
 //mount routes
 // GET /
 app.get("/", (req, res) => {
-    res.render("index.ejs");
+    res.render("index.ejs", {
+        user:req.session.user
+    });
   });
 
 app.listen(port, () => {
