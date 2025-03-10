@@ -1,20 +1,15 @@
 //dependencies
-const express = requie('express');
+const express = require('express');
 const dotenv = require("dotenv");
 const mongoose = require("mongoose"); 
 const methodOverride = require("method-override"); 
 const morgan = require("morgan"); 
 
 //initialize express
-const express = require("express");
 const app = express();
 
 //configure settings
 dotenv.config();
-
-const mongoose = require("mongoose");
-const methodOverride = require("method-override");
-const morgan = require("morgan");
 
 // Set the port from environment variable or default to 3000
 const port = process.env.PORT ? process.env.PORT : "3002";
@@ -33,6 +28,10 @@ app.use(methodOverride("_method"));
 app.use(morgan('dev'));
 
 //moutnt routes
+// GET /
+app.get("/", (req, res) => {
+    res.render("index.ejs");
+  });
 
 app.listen(port, () => {
     console.log(`Listening port: ${port}`);
