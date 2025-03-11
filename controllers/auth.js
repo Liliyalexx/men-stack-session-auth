@@ -27,6 +27,7 @@ router.post("/sign-up", async(req, res) => {
     res.send(`thanks for signing up${user.username}`);
 
 })
+//get/sign-in route that will display the login form
 router.get('/sign-in', (req, res)=>{
     res.render('auth/sign-in.ejs');
 })
@@ -55,6 +56,12 @@ req.session.user = {
     _id: userInDatabase._id,
   
 };
+console.log(req.session);
 res.redirect("/");
 });
+router.get('/sign-out', (req, res)=>{
+    req.session.destroy();
+    res.redirect('/');
+}
+);
 module.exports = router;
